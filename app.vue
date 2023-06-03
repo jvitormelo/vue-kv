@@ -87,7 +87,7 @@ onMounted(() => {
 
 onUnmounted(() => {
   clearInterval(gameUpdateInterval);
-  clearInterval(serverUpdateInterval);
+  clearTimeout(serverUpdateInterval);
   updateServerCounter();
 });
 </script>
