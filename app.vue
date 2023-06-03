@@ -52,7 +52,7 @@ function increment() {
   }
 
   clearTimeout(serverUpdateInterval);
-  serverUpdateInterval = setInterval(() => updateServerCounter(), 5000);
+  serverUpdateInterval = setTimeout(() => updateServerCounter(), 5000);
 }
 
 function updateServerCounter() {
