@@ -1,4 +1,7 @@
 <script setup lang="ts">
+let serverUpdateInterval: NodeJS.Timeout;
+let gameUpdateInterval: NodeJS.Timeout;
+
 const { data } = await useFetch<number>("/api/counter");
 
 const userCounter = ref(0);
@@ -43,9 +46,13 @@ function increment() {
   storedCount.value++;
   userCounter.value++;
   counterHistory.push(new Date());
+
   if (counterHistory.length > 10) {
     counterHistory.shift();
   }
+
+  clearTimeout(serverUpdateInterval);
+  serverUpdateInterval = setInterval(() => updateServerCounter(), 5000);
 }
 
 function updateServerCounter() {
@@ -57,9 +64,6 @@ function updateServerCounter() {
     storedCount.value = 0;
   }
 }
-
-let serverUpdateInterval: NodeJS.Timeout;
-let gameUpdateInterval: NodeJS.Timeout;
 
 onMounted(() => {
   gameUpdateInterval = setInterval(() => {
@@ -79,8 +83,6 @@ onMounted(() => {
       }
     }
   }, 250);
-
-  serverUpdateInterval = setInterval(() => updateServerCounter(), 10000);
 });
 
 onUnmounted(() => {
