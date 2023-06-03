@@ -58,8 +58,11 @@ function updateServerCounter() {
   }
 }
 
+let serverUpdateInterval: NodeJS.Timeout;
+let gameUpdateInterval: NodeJS.Timeout;
+
 onMounted(() => {
-  setInterval(() => {
+  gameUpdateInterval = setInterval(() => {
     clickPerSecond.value = counterHistory.filter((date) => {
       const now = new Date();
       return date.getTime() > now.getTime() - 1000;
@@ -77,10 +80,12 @@ onMounted(() => {
     }
   }, 250);
 
-  setInterval(() => updateServerCounter(), 8000);
+  serverUpdateInterval = setInterval(() => updateServerCounter(), 10000);
 });
 
 onUnmounted(() => {
+  clearInterval(gameUpdateInterval);
+  clearInterval(serverUpdateInterval);
   updateServerCounter();
 });
 </script>
